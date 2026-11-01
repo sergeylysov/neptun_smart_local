@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import inspect
 import logging
 
 from homeassistant.core import HomeAssistant
@@ -62,7 +63,12 @@ class modbus_hub:
 
     async def disconnect(self):
         if self._client.connected:
-            await self._client.close()
+            # pymodbus>=3.7: close() синхронный (возвращает None) — await None
+            # падал TypeError и ломал unload entry (создание options flow — первый
+            # вызов reload в жизни интеграции). Совместимо и со старыми версиями.
+            result = self._client.close()
+            if inspect.isawaitable(result):
+                await result
         self._is_connected = False
 
     async def _ensure_connected(self):
