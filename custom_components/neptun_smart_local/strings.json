@@ -1,0 +1,13 @@
+{
+  "options": {
+    "step": {
+      "init": {
+        "title": "Настройки Neptun Smart",
+        "description": "Интервал опроса модуля по Modbus TCP. Увеличьте, если модуль нестабилен (см. issues #20/#21).",
+        "data": {
+          "scan_interval": "Интервал опроса, секунд (5–300)"
+        }
+      }
+    }
+  }
+}
